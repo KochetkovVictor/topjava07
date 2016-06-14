@@ -13,9 +13,9 @@ public class UserMeal {
 
     protected final int calories;
 
-    protected int id;
+    protected Integer id;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -23,11 +23,14 @@ public class UserMeal {
         this.id = id;
     }
 
-    public UserMeal(int id, LocalDateTime dateTime, String description, int calories) {
+    public UserMeal(Integer id, LocalDateTime dateTime, String description, int calories) {
         this.id=id;
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
+    }
+    public UserMeal(LocalDateTime dateTime, String description, int calories) {
+      this(null,dateTime,description,calories);
     }
 
     public LocalDateTime getDateTime() {
