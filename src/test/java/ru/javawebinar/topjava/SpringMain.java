@@ -5,6 +5,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserMealRepository;
 import ru.javawebinar.topjava.to.UserMealWithExceed;
+import ru.javawebinar.topjava.util.DbPopulator;
 import ru.javawebinar.topjava.web.meal.UserMealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
 
@@ -38,33 +39,19 @@ public class SpringMain {
                             LocalDate.of(2015, Month.MAY, 30), LocalTime.of(7, 0),
                             LocalDate.of(2015, Month.MAY, 31), LocalTime.of(11, 0));
             filteredMealsWithExceeded.forEach(System.out::println);
+            DbPopulator populator=appCtx.getBean(DbPopulator.class);
+            populator.execute();
             UserMealRepository repository=appCtx.getBean(UserMealRepository.class);
-            System.out.println("User before");
-            repository.getAll(USER_ID).forEach(System.out::println);
-            System.out.println("ADMIN Before");
-            repository.getAll(ADMIN_ID).forEach(System.out::println);
-            repository.getAll(USER_ID).forEach(um -> repository.delete(um.getId(),USER_ID));
-            repository.getAll(ADMIN_ID).forEach(um -> repository.delete(um.getId(),ADMIN_ID));
-            System.out.println("User after");
-            repository.getAll(USER_ID).forEach(System.out::println);
-            System.out.println("ADMIN after");
-            repository.getAll(ADMIN_ID).forEach(System.out::println);
+            try {
+                System.out.println("!@@!!@@!!@");
+                repository.get(100_008,ADMIN_ID);
 
-            System.out.println("!!!!!!");
+            }
+            catch(Exception e)
+            {
+                System.out.println(e.getClass());
+            }
 
-            repository.getAll(USER_ID).forEach(System.out::println);
-            repository.save(MEAL1,USER_ID);
-            repository.save(MEAL2,USER_ID);
-            repository.save(MEAL3,USER_ID);
-            repository.save(MEAL4,USER_ID);
-            repository.save(MEAL5,USER_ID);
-            repository.save(MEAL6,USER_ID);
-            repository.save(ADMIN_MEAL,ADMIN_ID);
-            repository.save(ADMIN_MEAL2,ADMIN_ID);
-            System.out.println("User after");
-            repository.getAll(USER_ID).forEach(System.out::println);
-            System.out.println("ADMIN after");
-            repository.getAll(ADMIN_ID).forEach(System.out::println);
         }
     }
 }

@@ -12,8 +12,10 @@ import ru.javawebinar.topjava.repository.UserMealRepository;
 import ru.javawebinar.topjava.to.UserMealWithExceed;
 import ru.javawebinar.topjava.util.DbPopulator;
 import ru.javawebinar.topjava.util.UserMealsUtil;
+import ru.javawebinar.topjava.util.exception.NotFoundException;
 import ru.javawebinar.topjava.web.meal.UserMealRestController;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -25,9 +27,6 @@ import static ru.javawebinar.topjava.UserTestData.ADMIN;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
-/**
- * Created by Kochetkov_V on 29.06.2016.
- */
 @ContextConfiguration({"classpath:spring/spring-app.xml","classpath:spring/spring-db.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserMealServiceTest {
@@ -35,6 +34,8 @@ public class UserMealServiceTest {
     @Autowired
     private UserMealRestController controller;
 
+    @Autowired
+    protected UserMealService service;
 
     @Autowired
     private UserMealRepository repository;
@@ -64,15 +65,6 @@ public class UserMealServiceTest {
         MATCHER_WITH_EXCEED.assertCollectionEquals(meals,UserMealsUtil.getWithExceeded(Arrays.asList(MEAL6, MEAL5, MEAL4, MEAL3, MEAL2),2000));
     }
 
-    @Test
-    public void testGetBetweenDates() throws Exception {
-
-    }
-
-    @Test
-    public void testGetBetweenDateTimes() throws Exception {
-
-    }
 
     @Test
     public void testGetAll() throws Exception {
@@ -82,14 +74,26 @@ public class UserMealServiceTest {
 
     @Test
     public void testUpdate() throws Exception {
-        UserMeal meal=repository.get(100002,USER_ID);
+        UserMeal meal=repository.get(100_002,USER_ID);
         meal.setDescription("Changed meal");
-        controller.update(meal,USER_ID);
-        Assert.assertEquals(controller.get(100002).getDescription(),"Changed meal");
+        controller.update(meal,meal.getId());
+        Assert.assertEquals(controller.get(100_002).getDescription(),"Changed meal");
     }
 
     @Test
     public void testSave() throws Exception {
+        UserMeal newMeal=new UserMeal();
+        newMeal.setDescription("toast save");
+        newMeal.setCalories(700);
+        newMeal.setDateTime(LocalDateTime.now());
+        controller.create(newMeal);
+        List<UserMealWithExceed> meals=controller.getAll();
+        MATCHER_WITH_EXCEED.assertCollectionEquals(meals,UserMealsUtil.getWithExceeded(Arrays.asList(newMeal,MEAL6, MEAL5, MEAL4, MEAL3, MEAL2,MEAL1),2000));
+    }
 
+    @Test(expected = NotFoundException.class)
+    public void upDateNotFound() throws Exception{
+        UserMeal userMeal=repository.get(100_002,ADMIN_ID);
+        service.save(userMeal,ADMIN_ID);
     }
 }
