@@ -93,7 +93,7 @@ public class UserMealServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void upDateNotFound() throws Exception{
-        UserMeal userMeal=repository.get(100_002,ADMIN_ID);
-        service.save(userMeal,ADMIN_ID);
+        UserMeal userMeal=repository.get(MEAL1_ID,USER_ID);
+        service.update(userMeal,ADMIN_ID);
     }
 }
