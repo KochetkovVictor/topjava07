@@ -1,19 +1,31 @@
 package ru.javawebinar.topjava.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Digits;
 import java.time.LocalDateTime;
 
 /**
  * GKislin
  * 11.01.2015.
  */
+@Entity
 public class UserMeal extends BaseEntity {
 
+    @Column(name="date_time", columnDefinition = "timestamp default now()", nullable = false)
     private LocalDateTime dateTime;
 
+    @Column(name="description")
+    @NotEmpty
     private String description;
 
+    @Column(name="calories")
+    @NotEmpty
+    @Digits(fraction = 0, integer = 4)
     protected int calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
