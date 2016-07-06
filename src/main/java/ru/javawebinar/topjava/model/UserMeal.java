@@ -1,11 +1,9 @@
 package ru.javawebinar.topjava.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import java.time.LocalDateTime;
 
@@ -13,23 +11,35 @@ import java.time.LocalDateTime;
  * GKislin
  * 11.01.2015.
  */
+@NamedQueries({
+        @NamedQuery(name = UserMeal.DELETE, query = "DELETE FROM UserMeal um WHERE um.id=:id AND um.user.id=:userId"),
+        @NamedQuery(name = UserMeal.GET_BETWEEN, query = "SELECT um FROM UserMeal um "+
+                "WHERE um.user.id=:userId AND um.dateTime BETWEEN :startDate AND :endDate ORDER BY um.dateTime DESC"),
+        @NamedQuery(name = UserMeal.ALL_SORTED, query = "SELECT um FROM UserMeal um WHERE um.user.id=:userId ORDER BY um.dateTime DESC"),
+        @NamedQuery(name = UserMeal.GET, query = "SELECT um FROM UserMeal um where um.user.id=:userId AND um.id=:id "),
+})
 @Entity
+@Table(name="meals")
 public class UserMeal extends BaseEntity {
 
+    public static final String DELETE = "UserMeal.delete";
+    public static final String ALL_SORTED = "UserMeal.getAllSorted";
+    public static final String GET_BETWEEN = "UserMeal.getBetween";
+    public static final String GET = "UserMeal.get";
+
     @Column(name="date_time", columnDefinition = "timestamp default now()", nullable = false)
-    private LocalDateTime dateTime;
+    protected LocalDateTime dateTime;
 
     @Column(name="description")
     @NotEmpty
-    private String description;
+    protected String description;
 
-    @Column(name="calories")
-    @NotEmpty
-    @Digits(fraction = 0, integer = 4)
+    @Column(name="calories", nullable = false)
+    @Range(min = 10, max = 5000)
     protected int calories;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    protected User user;
 
     public UserMeal() {
     }
