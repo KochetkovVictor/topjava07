@@ -20,7 +20,7 @@ import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
 
-@ActiveProfiles({Profiles.ACTIVE_DB})
+
 public abstract class AbstractUserMealServiceTest extends AbstractServiceTest{
 
     @Autowired

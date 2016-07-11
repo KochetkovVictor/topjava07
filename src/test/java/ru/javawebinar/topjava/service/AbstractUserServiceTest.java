@@ -4,8 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.test.context.ActiveProfiles;
-import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.UserTestData.*;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
@@ -17,8 +15,6 @@ import java.util.Collections;
 
 import static ru.javawebinar.topjava.UserTestData.*;
 
-
-@ActiveProfiles({Profiles.ACTIVE_DB})
 public abstract class AbstractUserServiceTest extends AbstractServiceTest{
 
     @Autowired
