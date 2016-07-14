@@ -10,7 +10,7 @@
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
 <section>
-    <h2><a href="index.html">Home</a></h2>
+    <h2><a href="${pageContext.request.contextPath}">Home</a></h2>
     <h3>${param.action == 'create' ? 'Create meal' : 'Edit meal'}</h3>
     <hr>
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.UserMeal" scope="request"/>
