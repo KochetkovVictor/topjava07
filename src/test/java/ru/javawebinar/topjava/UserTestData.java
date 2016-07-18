@@ -69,7 +69,8 @@ public class UserTestData {
                     && Objects.equals(this.name, that.name)
                     && Objects.equals(this.email, that.email)
                     && Objects.equals(this.caloriesPerDay, that.caloriesPerDay)
-                    && Objects.equals(this.enabled, that.enabled);
+                    && Objects.equals(this.enabled, that.enabled)
+                    && Objects.equals(this.roles,that.roles);
         }
     }
 }
