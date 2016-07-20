@@ -11,6 +11,7 @@ import ru.javawebinar.topjava.util.TimeUtil;
 import ru.javawebinar.topjava.util.UserMealsUtil;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -64,5 +65,8 @@ public abstract class AbstractUserMealController {
                         startDate != null ? startDate : TimeUtil.MIN_DATE, endDate != null ? endDate : TimeUtil.MAX_DATE, userId
                 ), startTime != null ? startTime : LocalTime.MIN, endTime != null ? endTime : LocalTime.MAX, AuthorizedUser.getCaloriesPerDay()
         );
+    }
+    public List<UserMealWithExceed> getBetweenDateTime(LocalDateTime startDateTime, LocalDateTime endDateTime){
+        return getBetween(startDateTime.toLocalDate(), startDateTime.toLocalTime(), endDateTime.toLocalDate(),endDateTime.toLocalTime());
     }
 }

@@ -31,4 +31,28 @@ public class RootControllerTest extends AbstractControllerTest {
                         )
                 )));
     }
+
+    @Test
+    public void testMealList() throws Exception {
+        mockMvc.perform(get("/meals"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(view().name("mealList"))
+                .andExpect(forwardedUrl("/WEB-INF/jsp/mealList.jsp"))
+                .andExpect(model().attribute("mealList", hasSize(6)))
+                .andExpect(model().attribute("mealList", hasItem(
+                        allOf(
+                                hasProperty("id", is(START_SEQ + 2)),
+                                hasProperty("description", is("Завтрак"))
+                        )
+                )));
+    }
+
+    @Test
+    public void testResources() throws Exception {
+        mockMvc.perform(get("/resources/css/style.css"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("text/css"));
+    }
 }
